@@ -118,7 +118,7 @@ class OpenAIChat(ChatBackend):
             f"Sending request to OpenAI chat completion API:\n"
             f"{pprint.pformat(messages, sort_dicts=False)}"
         )
-        with Timeout(60, "OpenAI API timed out!"):
+        with Timeout(120, "OpenAI API timed out!"):
             response = openai.ChatCompletion.create(
                 model=self.model,
                 temperature=self.temperature,

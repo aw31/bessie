@@ -8,7 +8,8 @@ from bessie.settings import jinja_env
 def main():
     parser = argparse.ArgumentParser(description="Bessie is a programming assistant")
     parser.add_argument("request", help="A programming request in natural language")
-    parser.add_argument("patterns", nargs="+", help="Relevant files for the programming request")
+    parser.add_argument("patterns", nargs="+", help="A list of globs of relevant files")
+    parser.add_argument("--model", default="gpt-4", help="OpenAI chat model to use")
     args = parser.parse_args()
 
     files = {}
@@ -26,11 +27,11 @@ def main():
         Message("system", "You are a helpful programming assistant."),
         Message("environment", prompt),
     ]
-    backend = OpenAIChat("gpt-4", temperature=0, max_tokens=2000)
+    backend = OpenAIChat(args.model, temperature=0, max_tokens=2000)
     response = backend.run(Request(messages))
     print(f"Response:\n{response}")
 
-    with open("output.md", "w") as f:
+    with open("bessie.md", "w") as f:
         f.write(response)
 
 

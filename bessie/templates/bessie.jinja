@@ -2,11 +2,17 @@ You are a coding assistant tasked with completing the following request:
 
 {{ request }}
 
-Below is a list of the relevant files in the codebase. Describe the modifications needed to complete the request.
+Below is a list of the relevant files in the codebase. Describe the modifications needed to complete the request. Output modifications in the format:
+
+"File name:
+Description of changes..."
+
 
 Relevant files:
 {% for file, content in files.items() %}
 
 {{ file }}:
+```
 {{ content }}
+```
 {% endfor %}
