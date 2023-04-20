@@ -43,7 +43,7 @@ class Backend:
 
 class ChatBackend(Backend):
     def _condense_messages(self, messages: Sequence[Message]) -> Sequence[Message]:
-        """Condense messages from the same sender into a single message and strip whitespace."""
+        """Condense consecutive messages from the same sender into a single message and strip whitespace."""
         condensed_messages = []
         current_message = ""
         current_sender = ""

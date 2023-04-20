@@ -13,7 +13,7 @@ dependencies = [
   "python-dotenv>=1.0.0",
   "tiktoken>=0.3.2",
   "black",
-  "isort",  
+  "isort",
 ]
 
 [project.scripts]
