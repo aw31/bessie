@@ -47,7 +47,7 @@ def main():
             response = wrapper.run(backend, prompt)
             print(f"\n\033[1mBessie:\033[0m\n{response}\n")
             f.write(f"## Bessie\n{response}\n")
-            prompt = input("You:\n")
+            prompt = input("\033[1mYou:\033[0m\n")
             f.write(f"## You\n{prompt}\n")
 
     print(f"Transcript written to {args.output}")
