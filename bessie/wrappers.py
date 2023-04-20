@@ -52,6 +52,14 @@ class ChatWrapper(Wrapper):
     def _parse(self, action: str) -> Any:
         return action
 
+    def stream_run(self, backend, observation, **kwargs):
+        prompt = self.prompt(observation)
+        response = ""
+        for chunk in backend.stream_run(Request(prompt=prompt, **kwargs)):
+            response += chunk
+            yield chunk
+        self.parse(response)
+
     def reset(self):
         self._messages: List[Message] = []
         self._last_action: Optional[Message] = None

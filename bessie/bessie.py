@@ -44,11 +44,16 @@ def main():
         print(f"\033[1mPrompt:\033[0m\n{prompt}")
         f.write(f"## Args\n```\n{pprint.pformat(vars(args))}\n```\n")
         while prompt:
-            response = wrapper.run(backend, prompt)
-            print(f"\n\033[1mBessie:\033[0m\n{response}\n")
-            f.write(f"## Bessie\n{response}\n")
+            print("\n\033[1mBessie:\033[0m")
+            f.write("## Bessie\n")
+            for chunk in wrapper.stream_run(backend, prompt):
+                print(chunk, end="")
+                f.write(chunk)
+            print("\n")
+            f.write("\n")
             prompt = input("\033[1mYou:\033[0m\n")
             f.write(f"## You\n{prompt}\n")
+            f.flush()
 
     print(f"Transcript written to {args.output}")
 

@@ -20,10 +20,11 @@ ANTHROPIC_API_KEY=sk-...   # to use Anthropic models
 
 ## Usage
 
-After installing Bessie and setting up the environment variables, you can use the `bessie` command to interact with the chatbot:
+After installing Bessie and setting up the environment variables, you can use the `bessie` command to start a chat:
 ```bash
 bessie "Write a README with instructions to install using pip from https://github.com/aw31/bessie and set up environment variables" bessie/*
 ```
+To end the conversation, send an empty message. The chat transcript will be saved at `bessie.md`.
 
 For more information on how to use Bessie, you can run `bessie --help`:
 ```

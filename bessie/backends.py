@@ -3,7 +3,7 @@ import os
 import pprint
 import time
 from dataclasses import dataclass
-from typing import Generic, Optional, Sequence, TypeVar
+from typing import Generator, Generic, Optional, Sequence, TypeVar
 
 import anthropic
 import openai
@@ -65,6 +65,11 @@ class ChatBackend(Backend):
     def run(self, request: Request[Sequence[Message]]) -> str:
         raise NotImplementedError
 
+    def stream_run(
+        self, request: Request[Sequence[Message]]
+    ) -> Generator[str, None, None]:
+        yield self.run(request)
+
 
 class DummyChat(ChatBackend):
     def run(self, request: Request[Sequence[Message]]) -> str:
@@ -108,7 +113,7 @@ class OpenAIChat(ChatBackend):
             messages.pop(pop_index)
         return messages
 
-    def run(self, request: Request[Sequence[Message]]) -> str:
+    def _run(self, request: Request[Sequence[Message]], stream=False):
         messages = []
         for message in self._condense_messages(request.prompt):
             role, content = self._ROLE_LOOKUP[message.sender], message.content
@@ -125,10 +130,22 @@ class OpenAIChat(ChatBackend):
                 max_tokens=self.max_tokens,
                 messages=messages,
                 stop=request.stop,
+                stream=stream,
             )
+        return response
+
+    def run(self, request: Request[Sequence[Message]]):
+        response = self._run(request)
         response_text = response["choices"][0].message.content  # type: ignore
         logging.info(f'Received response from OpenAI API: "{response_text}"')
         return response_text
+
+    def stream_run(self, request: Request[Sequence[Message]]):
+        response = self._run(request, stream=True)
+        for chunk in response:
+            delta = chunk["choices"][0].delta  # type: ignore
+            if "content" in delta:
+                yield delta.content
 
     def _send_request(
         self, messages: list[dict], request: Request[Sequence[Message]]
