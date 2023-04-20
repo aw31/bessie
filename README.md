@@ -1,4 +1,4 @@
-# Bessie
+# Bessie 🐮
 
 Bessie is a programming assistant chatbot that can help you with your programming tasks. It uses OpenAI's GPT or Anthropic's Claude models to generate responses based on your request and your codebase.
 
