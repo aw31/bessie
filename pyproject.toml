@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bessie"
+version = "0.0.1"
+
+dependencies = [
+  "Jinja2>=3.1.2",
+  "anthropic>=0.2.6",
+  "openai>=0.27.0",
+  "python-dotenv>=1.0.0",
+  "tiktoken>=0.3.2",
+  "black",
+  "isort",  
+]
+
+[project.scripts]
+bessie = "bessie.bessie:main"
+
+[tool.setuptools]
+packages = ["bessie"]
+
+[tool.pytest.ini_options]
+addopts = ["--ignore=third_party"]
+
+[tool.pyright]
+exclude = ["third_party"]
+
+[tool.black]
+force-exclude = "third_party"
